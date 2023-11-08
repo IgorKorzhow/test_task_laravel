@@ -3,7 +3,7 @@
 </script>
 
 <template>
-<label class="basic-fount">Check</label>
+<label class="basic-fount"><slot></slot></label>
 </template>
 
 <style scoped>

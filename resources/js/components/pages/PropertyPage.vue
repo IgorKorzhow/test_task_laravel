@@ -1,14 +1,25 @@
 <script setup>
+import {ref} from "vue";
+
 import Logo from "@/logo/Logo.vue";
 import NavbarItem from "@/items/NavbarItem.vue";
 import Navbar from "@/navbar/Navbar.vue";
 import CustomTable from "@/tables/Custom-Table.vue";
 import Button from "@/UI/Button.vue";
-import Modal from "@/modals/Modal.vue";
+import CreateProductForm from "@/forms/property/CreateProductForm.vue";
+
+const isShowCreateProductForm = ref(false);
+
+function clickShowCreatePropertyBtn() {
+    isShowCreateProductForm.value = !isShowCreateProductForm.value;
+}
+
 </script>
 
 <template>
-    <Modal />
+    <div v-if="isShowCreateProductForm">
+        <CreateProductForm @close-modal="clickShowCreatePropertyBtn" />
+    </div>
     <div class="container">
         <div class="navigation-part">
             <div class="container">
@@ -24,7 +35,7 @@ import Modal from "@/modals/Modal.vue";
             <div class="container">
                 <CustomTable />
                 <div style="margin: 17px 18px 17px auto;">
-                    <Button>Добавить</Button>
+                    <Button @click="clickShowCreatePropertyBtn">Добавить</Button>
                 </div>
             </div>
         </div>

@@ -1,17 +1,23 @@
 <script setup>
-
 import Cross from "@/logo/Cross.vue";
+import {ref} from "vue";
+import { onClickOutside } from '@vueuse/core'
+
+const target = ref(null)
+const emit = defineEmits(['closeModal'])
+
+onClickOutside(target, () => emit('closeModal'))
+
 </script>
 
 <template>
     <div class="modal">
-        <div class="modal-content">
+        <div class="modal-content" ref="target">
             <div class="modal-content-container">
-                <article class="title">
-                    Добавить продукт
-                </article>
+                <slot>
+                </slot>
             </div>
-            <Cross style="margin-left: auto" />
+            <Cross style="margin-left: auto" @click="$emit('closeModal')" />
         </div>
     </div>
 </template>
@@ -35,16 +41,11 @@ import Cross from "@/logo/Cross.vue";
     background: #374050;
     margin: 15% auto;
     padding: 18px 5px;
-    width: 80%;
+    width: 50%;
 }
 
 .modal-content-container {
+    width: 70%;
     padding: 0 12px;
-}
-
-.title {
-    margin: 30px 0;
-    font-size: 20px;
-    color: #FFFFFF;
 }
 </style>
