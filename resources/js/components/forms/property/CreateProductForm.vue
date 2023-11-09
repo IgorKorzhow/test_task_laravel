@@ -1,16 +1,14 @@
 <script setup>
-import Modal from "@/modals/Modal.vue";
-import Input from "@/UI/Input.vue";
-import Label from "@/UI/Label.vue";
-import Select from "@/UI/Select.vue";
-
+import Modal from "@/components/modals/Modal.vue";
+import {STATUSES} from "@/constants/statuses.js";
+import LinkButton from "@/components/UI/LinkButton.vue";
 </script>
 
 <template>
     <Modal>
-        <article class="title">
+        <div class="title">
             Добавить продукт
-        </article>
+        </div>
         <form>
             <div class="form-group">
                 <Label for="article">Артикул</Label>
@@ -22,23 +20,29 @@ import Select from "@/UI/Select.vue";
             </div>
             <div class="form-group">
                 <Label for="state">Статус</Label>
-                <Select/>
+                <Select>
+                    <option v-for="status in STATUSES" value="{{status.value}}">
+                        {{status.name}}
+                    </option>
+                </Select>
+            </div>
+            <div class="form-group">
+                <div class="basic-fount sub-title">
+                    Атрибуты
+                </div>
+                <div>
+                    <LinkButton>+ Добавить атрибут</LinkButton>
+                </div>
             </div>
         </form>
     </Modal>
 </template>
 
 <style scoped>
-.title {
-    margin: 30px 0;
-    font-size: 20px;
-    color: #FFFFFF;
-}
-
 .form-group {
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
+    margin-bottom: 13px;
 }
 
 label {

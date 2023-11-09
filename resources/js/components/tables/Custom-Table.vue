@@ -1,26 +1,27 @@
 <script setup>
+import {setFirstLetterCapital} from "@/helpers.js";
 
+defineProps(['data', 'fieldNames']);
 </script>
-
 <template>
     <table class="basic-fount">
         <tr>
-            <th>Артикул</th>
-            <th>Название</th>
-            <th>Статус</th>
-            <th>Атрибуты</th>
+            <th v-for="fieldName in fieldNames">{{ fieldName.name }}</th>
         </tr>
-        <tr>
-            <td>Alfreds Futterkiste</td>
-            <td>Maria Anders</td>
-            <td>Germany</td>
-            <td>sdf</td>
-        </tr>
-        <tr>
-            <td>Centro comercial Moctezuma</td>
-            <td>Francisco Chang</td>
-            <td>Mexico</td>
-            <td>fsdf</td>
+        <tr v-for="item in data">
+            <td
+                v-for="fieldName in fieldNames"
+            >
+                <span v-if="typeof item[fieldName.field] === 'object'">
+                    <span v-for="currentKey in Object.keys(item[fieldName.field])">
+                        {{setFirstLetterCapital(currentKey) + ': ' + item[fieldName.field][currentKey]}}
+                        <br>
+                    </span>
+                </span>
+                <span v-else>
+                        {{item[fieldName.field]}}
+                </span>
+            </td>
         </tr>
     </table>
 </template>
@@ -33,6 +34,7 @@ table {
 }
 
 tr th {
+    font-weight: 400;
     text-align: left;
     text-transform: uppercase;
     padding: 9px 18px;

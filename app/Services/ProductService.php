@@ -4,9 +4,9 @@ namespace App\Services;
 
 use App\Commands\Product\CreateProductCommand;
 use App\Commands\Product\UpdateProductCommand;
-use App\Data\ProductData;
+use App\Models\Product;
 use App\Repositories\ProductRepository;
-use Spatie\LaravelData\DataCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Throwable;
 
 class ProductService
@@ -16,29 +16,48 @@ class ProductService
     {
     }
 
-    public function getAvailableProducts(): DataCollection
+    /**
+     * @param int $perPage
+     * @return LengthAwarePaginator
+     */
+    public function getAvailableProducts(int $perPage): LengthAwarePaginator
     {
-        return ProductData::collection($this->productRepository->getAvailableProducts());
-    }
-
-    public function getProductById(int $id): ProductData
-    {
-        return ProductData::from($this->productRepository->getAvailableProductById($id));
-    }
-
-    public function createProduct(CreateProductCommand $createProductCommand): ProductData
-    {
-        return ProductData::from($this->productRepository->createProduct($createProductCommand->all()));
+        return $this->productRepository->getProducts($perPage);
     }
 
     /**
-     * @throws Throwable
+     * @param int $id
+     * @return Product
      */
-    public function updateProduct(UpdateProductCommand $updateProductCommand, int $id): ProductData
+    public function getProductById(int $id): Product
     {
-        return ProductData::from($this->productRepository->updateProduct($updateProductCommand->toArray(), $id));
+        return $this->productRepository->getProductById($id);
     }
 
+    /**
+     * @param CreateProductCommand $createProductCommand
+     * @return Product
+     */
+    public function createProduct(CreateProductCommand $createProductCommand): Product
+    {
+        return $this->productRepository->createProduct($createProductCommand->all());
+    }
+
+    /**
+     * @param UpdateProductCommand $updateProductCommand
+     * @param int $id
+     * @return Product
+     * @throws Throwable
+     */
+    public function updateProduct(UpdateProductCommand $updateProductCommand, int $id): Product
+    {
+        return $this->productRepository->updateProduct($updateProductCommand->toArray(), $id);
+    }
+
+    /**
+     * @param int $id
+     * @return bool|null
+     */
     public function deleteProduct(int $id): ?bool
     {
         return $this->productRepository->deleteProduct($id);

@@ -1,5 +1,5 @@
 <script setup>
-import PropertyPage from "@/pages/PropertyPage.vue";
+import PropertyPage from "@/components/pages/PropertyPage.vue";
 </script>
 
 <template>
@@ -7,13 +7,6 @@ import PropertyPage from "@/pages/PropertyPage.vue";
 </template>
 
 <style>
-body {
-    background: #F2F6FA;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 .basic-fount {
     color: #A6AFB8;
     font-family: Roboto,serif;
@@ -21,5 +14,26 @@ body {
     font-style: normal;
     font-weight: 400;
     line-height: 11px; /* 100% */
+}
+
+.title {
+    margin: 12px 0 30px 0;
+    font-size: 20px;
+    color: #FFFFFF;
+}
+
+.sub-title {
+    color: #FFFFFF;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 11px;
+}
+
+body {
+    background: #F2F6FA;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 </style>

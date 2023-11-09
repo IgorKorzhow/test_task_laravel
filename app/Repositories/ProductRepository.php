@@ -3,22 +3,34 @@
 namespace App\Repositories;
 
 use App\Models\Product;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Throwable;
 
 class ProductRepository
 {
 
-    public function getAvailableProducts(): Collection
+    /**
+     * @param int $perPage
+     * @return LengthAwarePaginator
+     */
+    public function getProducts(int $perPage = 15): LengthAwarePaginator
     {
-        return Product::available()->get();
+        return Product::paginate($perPage);
     }
 
-    public function getAvailableProductById(int $id): Product
+    /**
+     * @param int $id
+     * @return Product
+     */
+    public function getProductById(int $id): Product
     {
-        return Product::available()->findOrFail($id);
+        return Product::findOrFail($id);
     }
 
+    /**
+     * @param array $data
+     * @return Product
+     */
     public function createProduct(array $data): Product
     {
         return Product::create($data);
@@ -29,14 +41,18 @@ class ProductRepository
      */
     public function updateProduct(array $data, int $id): Product
     {
-        $product = Product::available()->findOrFail($id);
+        $product = Product::findOrFail($id);
         $product->updateOrFail($data);
 
         return $product->fresh();
     }
 
+    /**
+     * @param int $id
+     * @return bool|null
+     */
     public function deleteProduct(int $id): ?bool
     {
-        return Product::available()->findOrFail($id)->delete();
+        return Product::findOrFail($id)->delete();
     }
 }

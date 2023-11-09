@@ -1,5 +1,10 @@
-<script setup>
+<script>
+export default {
+    name: 'Input'
+}
+</script>
 
+<script setup>
 </script>
 
 <template>

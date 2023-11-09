@@ -1,19 +1,23 @@
 <script setup>
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
+import Logo from "@/components/logo/Logo.vue";
+import NavbarItem from "@/components/items/NavbarItem.vue";
+import Navbar from "@/components/navbar/Navbar.vue";
+import CustomTable from "@/components/tables/Custom-Table.vue";
+import CreateProductForm from "@/components/forms/property/CreateProductForm.vue";
+import useProducts from "@/composables/products.js";
+import {NAME_FIELDS_PRODUCT_TABLE} from "@/constants/properyHeaders.js";
 
-import Logo from "@/logo/Logo.vue";
-import NavbarItem from "@/items/NavbarItem.vue";
-import Navbar from "@/navbar/Navbar.vue";
-import CustomTable from "@/tables/Custom-Table.vue";
-import Button from "@/UI/Button.vue";
-import CreateProductForm from "@/forms/property/CreateProductForm.vue";
+const { products, getProducts } = useProducts()
+onMounted(() => {
+    getProducts()
+})
 
 const isShowCreateProductForm = ref(false);
 
 function clickShowCreatePropertyBtn() {
     isShowCreateProductForm.value = !isShowCreateProductForm.value;
 }
-
 </script>
 
 <template>
@@ -33,7 +37,7 @@ function clickShowCreatePropertyBtn() {
         <div style="width: 100%">
             <Navbar />
             <div class="container">
-                <CustomTable />
+                <CustomTable :data="products.data" :fieldNames="NAME_FIELDS_PRODUCT_TABLE"/>
                 <div style="margin: 17px 18px 17px auto;">
                     <Button @click="clickShowCreatePropertyBtn">Добавить</Button>
                 </div>
@@ -49,7 +53,7 @@ function clickShowCreatePropertyBtn() {
 }
 
 .navigation-part {
-    height: 100vh;
+    min-height: 100vh;
     width: 180px;
     background-color: #374050;
 }

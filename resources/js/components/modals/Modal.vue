@@ -1,5 +1,5 @@
 <script setup>
-import Cross from "@/logo/Cross.vue";
+import Cross from "@/components/logo/Cross.vue";
 import {ref} from "vue";
 import { onClickOutside } from '@vueuse/core'
 
