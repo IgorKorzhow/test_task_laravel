@@ -12,7 +12,7 @@ use Throwable;
 class ProductService
 {
 
-    public function __construct(public ProductRepository $productRepository)
+    public function __construct(public readonly ProductRepository $productRepository)
     {
     }
 

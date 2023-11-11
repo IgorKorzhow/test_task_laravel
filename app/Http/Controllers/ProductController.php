@@ -15,7 +15,7 @@ use Throwable;
 
 class ProductController extends Controller
 {
-    public function __construct(public ProductService $productService)
+    public function __construct(public readonly ProductService $productService)
     {
     }
 

@@ -1,11 +1,3 @@
 export function setFirstLetterCapital(name) {
-    const splitted = name.split("");
-
-    const first = splitted[0].toUpperCase();
-
-    const rest = [...splitted];
-
-    rest.splice(0, 1);
-
-    return [first, ...rest].join("");
+    return name.charAt(0).toUpperCase() + name.slice(1);
 }
