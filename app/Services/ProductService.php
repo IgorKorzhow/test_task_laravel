@@ -20,7 +20,7 @@ class ProductService
      * @param int $perPage
      * @return LengthAwarePaginator
      */
-    public function getAvailableProducts(int $perPage): LengthAwarePaginator
+    public function getProducts(int $perPage): LengthAwarePaginator
     {
         return $this->productRepository->getProducts($perPage);
     }

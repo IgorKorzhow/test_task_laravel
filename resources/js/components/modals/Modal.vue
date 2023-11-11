@@ -39,7 +39,7 @@ onClickOutside(target, () => emit('closeModal'))
 .modal-content {
     display: flex;
     background: #374050;
-    margin: 15% auto;
+    margin: 10% auto;
     padding: 18px 5px;
     width: 50%;
 }

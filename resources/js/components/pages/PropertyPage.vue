@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref} from "vue";
+import {ref} from "vue";
 import Logo from "@/components/logo/Logo.vue";
 import NavbarItem from "@/components/items/NavbarItem.vue";
 import Navbar from "@/components/navbar/Navbar.vue";
@@ -9,14 +9,12 @@ import useProducts from "@/composables/products.js";
 import {NAME_FIELDS_PRODUCT_TABLE} from "@/constants/properyHeaders.js";
 
 const { products, getProducts } = useProducts()
-onMounted(() => {
-    getProducts()
-})
 
 const isShowCreateProductForm = ref(false);
 
 function clickShowCreatePropertyBtn() {
-    isShowCreateProductForm.value = !isShowCreateProductForm.value;
+    isShowCreateProductForm.value = !isShowCreateProductForm.value
+    document.body.style.overflow = 'hidden'
 }
 </script>
 

@@ -9,7 +9,6 @@ use App\Services\ProductService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Spatie\LaravelData\DataCollection;
 use Spatie\LaravelData\PaginatedDataCollection;
 use Throwable;
 
@@ -25,7 +24,7 @@ class ProductController extends Controller
     {
         $perPage = $request->input('per_page', 15);
 
-        return ProductData::collection($this->productService->getAvailableProducts($perPage));
+        return ProductData::collection($this->productService->getProducts($perPage));
     }
 
     /**
