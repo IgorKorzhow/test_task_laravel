@@ -1,30 +1,32 @@
 <script setup>
 import Modal from "@/components/modals/Modal.vue";
 import {STATUSES} from "@/constants/statuses.js";
-import LinkButton from "@/components/UI/LinkButton.vue";
+import {reactive} from "vue";
+
+const product = reactive({
+    article: '',
+    name: '',
+});
+
 </script>
 
 <template>
-    <Modal>
+    <Modal @close-modal="$emit('closeModal')">
         <div class="title">
             Добавить продукт
         </div>
         <form>
             <div class="form-group">
-                <Label for="article">Артикул</Label>
-                <Input id="article"/>
+                <CustomLabel for="article">Артикул</CustomLabel>
+                <CustomInput id="article" v-model="product.article" />
             </div>
             <div class="form-group">
-                <Label for="name">Название</Label>
-                <Input id="name"/>
+                <CustomLabel for="name">Название</CustomLabel>
+                <CustomInput id="name" v-model="product.name" />
             </div>
             <div class="form-group">
-                <Label for="state">Статус</Label>
-                <Select>
-                    <option v-for="status in STATUSES" value="{{status.value}}">
-                        {{status.name}}
-                    </option>
-                </Select>
+                <CustomLabel for="state">Статус</CustomLabel>
+                <CustomSelect :options="STATUSES" />
             </div>
             <div class="form-group">
                 <div class="basic-fount sub-title">

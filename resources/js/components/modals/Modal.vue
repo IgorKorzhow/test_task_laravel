@@ -7,7 +7,6 @@ const target = ref(null)
 const emit = defineEmits(['closeModal'])
 
 onClickOutside(target, () => emit('closeModal'))
-
 </script>
 
 <template>

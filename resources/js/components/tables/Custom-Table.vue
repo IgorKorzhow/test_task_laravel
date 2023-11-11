@@ -1,25 +1,36 @@
 <script setup>
 import {setFirstLetterCapital} from "@/helpers.js";
 
-defineProps(['data', 'fieldNames']);
+defineProps(
+    {
+        data: {
+            type: Array,
+            required: true
+        },
+        fieldNames: {
+            type: Array,
+            required: true
+        }
+    }
+);
 </script>
 <template>
     <table class="basic-fount">
         <tr>
-            <th v-for="fieldName in fieldNames">{{ fieldName.name }}</th>
+            <th key="{{ fieldName.name }}" v-for="fieldName in fieldNames">{{ fieldName.name }}</th>
         </tr>
-        <tr v-for="item in data">
+        <tr v-for="item in data" key="{{ item.id }}">
             <td
                 v-for="fieldName in fieldNames"
             >
                 <span v-if="typeof item[fieldName.field] === 'object'">
                     <span v-for="currentKey in Object.keys(item[fieldName.field])">
-                        {{setFirstLetterCapital(currentKey) + ': ' + item[fieldName.field][currentKey]}}
+                        {{ setFirstLetterCapital(currentKey) + ': ' + item[fieldName.field][currentKey] }}
                         <br>
                     </span>
                 </span>
                 <span v-else>
-                        {{item[fieldName.field]}}
+                        {{ item[fieldName.field] }}
                 </span>
             </td>
         </tr>

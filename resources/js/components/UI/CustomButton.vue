@@ -1,6 +1,6 @@
 <script>
 export default {
-    name: 'Button'
+    name: 'CustomButton'
 }
 </script>
 
