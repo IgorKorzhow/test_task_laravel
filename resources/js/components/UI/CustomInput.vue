@@ -22,6 +22,7 @@ const updateValue = (event) => {
 
 <style scoped>
 .input {
+    border: none;
     height: 30px;
     box-sizing: border-box;
     border-radius: 5px;

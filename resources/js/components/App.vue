@@ -1,5 +1,5 @@
 <script setup>
-import PropertyPage from "@/components/pages/PropertyPage.vue";
+import PropertyPage from "@/components/pages/products/ProductPage.vue";
 </script>
 
 <template>
@@ -17,6 +17,7 @@ import PropertyPage from "@/components/pages/PropertyPage.vue";
 }
 
 .title {
+    font-weight: bold;
     margin: 12px 0 30px 0;
     font-size: 20px;
     color: #FFFFFF;

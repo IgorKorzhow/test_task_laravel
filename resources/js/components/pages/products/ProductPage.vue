@@ -3,11 +3,10 @@ import {onMounted} from "vue";
 import Logo from "@/components/logo/Logo.vue";
 import NavbarItem from "@/components/items/NavbarItem.vue";
 import Navbar from "@/components/navbar/Navbar.vue";
-import CustomTable from "@/components/tables/Custom-Table.vue";
 import {NAME_FIELDS_PRODUCT_TABLE} from "@/constants/properyHeaders.js";
 import {useProductStore} from "@/stores/productStore.js";
 import {useAppStore} from "@/stores/appStore.js";
-import CreateProductForm from "@/components/forms/property/CreateProductForm.vue";
+import CreateProductForm from "@/components/pages/products/CreateProductModal.vue";
 
 const productStore = useProductStore();
 const appStore = useAppStore();

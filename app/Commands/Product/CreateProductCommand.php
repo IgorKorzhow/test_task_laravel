@@ -13,6 +13,7 @@ use Spatie\LaravelData\Attributes\Validation\Min;
 use Spatie\LaravelData\Attributes\Validation\Unique;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
+use Spatie\LaravelData\Support\Validation\ValidationContext;
 
 #[MapName(SnakeCaseMapper::class)]
 class CreateProductCommand extends Data
@@ -24,7 +25,7 @@ class CreateProductCommand extends Data
         public string $name,
         #[Bail, Enum(ProductStatus::class)]
         public ProductStatus $status,
-        public array $data,
+        public ?array $data,
     )
     {
     }

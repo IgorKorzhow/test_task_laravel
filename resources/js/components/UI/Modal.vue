@@ -1,3 +1,9 @@
+<script>
+export default {
+    name: 'Modal',
+}
+</script>
+
 <script setup>
 import Cross from "@/components/logo/Cross.vue";
 import {ref} from "vue";

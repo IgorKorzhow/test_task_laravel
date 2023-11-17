@@ -5,32 +5,24 @@ export default {
 </script>
 
 <script setup>
-import {onMounted, reactive, ref} from "vue";
+import {ref} from "vue";
+import ExpandLogo from "@/components/logo/ExpandLogo.vue";
+import {onClickOutside} from "@vueuse/core";
 
 const props = defineProps({
     options: {
         type: Array,
         required: true,
     },
-    default: {
-        type: Object,
-        required: false,
-        default: 'Выберите стату'
-    },
+    modelValue: String,
 });
 
+const target = ref(null);
 const isOpen = ref(false);
 
-const selectedOption = reactive({
-    name: "",
-    value: ""
-});
+const selectedOption = ref(props.options.find(option => option.value === props.modelValue));
 
-const emit = defineEmits(['input'])
-
-onMounted(() => {
-    emit('input', selectedOption.value);
-});
+const emit = defineEmits(['update:modelValue'])
 
 const handleOnClickSelect = () => {
     isOpen.value = !isOpen.value;
@@ -38,91 +30,85 @@ const handleOnClickSelect = () => {
 
 const handleOnClickOption = (option) => {
     selectedOption.value = option;
-    emit('input', selectedOption.value);
     isOpen.value = !isOpen.value;
-};
-</script>
 
+    emit('update:modelValue', selectedOption.value.value)
+};
+
+onClickOutside(target, () => isOpen.value = false);
+</script>
 <template>
-    <div class="custom-select">
-        <div class="selected" :class="{ open: isOpen }" @click="handleOnClickSelect">
-            {{ selectedOption.name }}
-        </div>
-        <div class="items" :class="{ selectHide: !isOpen }">
-            <div
-                v-for="(option, index) of options"
-                :key="index"
-                @click="handleOnClickOption(option)"
-            >
-                {{ option.name }}
+    <div class="custom-select basic-fount" ref="target">
+        <div @click="handleOnClickSelect" class="select-container">
+            <div class="selected-item-text">
+                {{ selectedOption.name }}
+            </div>
+            <div class="expand_logo" :class="{'hide_expand_logo': isOpen}">
+                <ExpandLogo />
             </div>
         </div>
+            <div class="items" :class="{'show-options': isOpen}">
+                <div
+                    v-for="(option, index) of options"
+                    :key="index"
+                    :class="{'selected_option': option.value === selectedOption.value}"
+                    @click="handleOnClickOption(option)"
+                >
+                    {{ option.name }}
+                </div>
+            </div>
     </div>
 </template>
 
-
 <style scoped>
 .custom-select {
-    position: relative;
-    width: 100%;
-    text-align: left;
-    outline: none;
-    height: 47px;
-    line-height: 47px;
-}
+    font-weight: 300;
+    color: black;
 
-.custom-select .selected {
-    background-color: #0a0a0a;
-    border-radius: 6px;
-    border: 1px solid #666666;
-    color: #fff;
-    padding-left: 1em;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+
     cursor: pointer;
-    user-select: none;
 }
 
-.custom-select .selected.open {
-    border: 1px solid #ad8225;
-    border-radius: 6px 6px 0px 0px;
+.select-container {
+    height: 30px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
 }
 
-.custom-select .selected:after {
-    position: absolute;
-    content: "";
-    top: 22px;
-    right: 1em;
-    width: 0;
-    height: 0;
-    border: 5px solid transparent;
-    border-color: #fff transparent transparent transparent;
+.selected-item-text {
+    margin: 10px 9px;
 }
 
-.custom-select .items {
-    color: #fff;
-    border-radius: 0px 0px 6px 6px;
-    overflow: hidden;
-    border-right: 1px solid #ad8225;
-    border-left: 1px solid #ad8225;
-    border-bottom: 1px solid #ad8225;
-    position: absolute;
-    background-color: #0a0a0a;
-    left: 0;
-    right: 0;
-    z-index: 1;
+.selected_option {
+    background: #50A9FC;
+}
+
+.expand_logo {
+    margin: 5px;
+}
+
+.hide_expand_logo {
+    display: none;
 }
 
 .custom-select .items div {
-    color: #fff;
-    padding-left: 1em;
-    cursor: pointer;
-    user-select: none;
+    padding: 9px;
 }
 
-.custom-select .items div:hover {
-    background-color: #ad8225;
+.custom-select .items div:last-child {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+
+    padding: 9px;
 }
 
-.selectHide {
+.items {
     display: none;
+}
+.show-options {
+    display: block;
 }
 </style>

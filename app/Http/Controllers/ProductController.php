@@ -33,6 +33,8 @@ class ProductController extends Controller
      */
     public function store(CreateProductCommand $createProductCommand): JsonResponse
     {
+        //dd($createProductCommand);
+
         $createdProduct = $this->productService->createProduct($createProductCommand);
 
         return response()->json(ProductData::from($createdProduct), 201);
