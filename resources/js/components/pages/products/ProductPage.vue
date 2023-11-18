@@ -3,13 +3,15 @@ import {onMounted} from "vue";
 import Logo from "@/components/logo/Logo.vue";
 import NavbarItem from "@/components/items/NavbarItem.vue";
 import Navbar from "@/components/navbar/Navbar.vue";
-import {NAME_FIELDS_PRODUCT_TABLE} from "@/constants/properyHeaders.js";
+import {NAME_FIELDS_PRODUCT_TABLE} from "@/constants/productHeadersForTable.js";
 import {useProductStore} from "@/stores/productStore.js";
-import {useAppStore} from "@/stores/appStore.js";
-import CreateProductForm from "@/components/pages/products/CreateProductModal.vue";
+import {setFirstLetterCapital} from "@/helpers.js";
+import {useRouter} from "vue-router";
+import {DotLoader} from "vue3-spinner";
+
+const router = useRouter();
 
 const productStore = useProductStore();
-const appStore = useAppStore();
 
 onMounted(() => {
     productStore.fetchProducts();
@@ -17,13 +19,10 @@ onMounted(() => {
 </script>
 
 <template>
-    <div v-if="appStore.isShowModal">
-        <CreateProductForm @close-modal="appStore.closeModal()" />
-    </div>
     <div class="container">
         <div class="navigation-part">
             <div class="container">
-                <Logo />
+                <Logo/>
                 <div class="logo-text basic-fount">
                     Enterprise Resource Planning
                 </div>
@@ -31,15 +30,44 @@ onMounted(() => {
             <NavbarItem />
         </div>
         <div style="width: 100%">
-            <Navbar />
-            <div class="container">
-                <CustomTable :data="productStore.products" :fieldNames="NAME_FIELDS_PRODUCT_TABLE"/>
+            <Navbar/>
+            <div class="container" v-if="productStore.products">
+                <CustomTable>
+                    <template #thead>
+                        <tr>
+                            <th key="{{ fieldName.name }}" v-for="fieldName in NAME_FIELDS_PRODUCT_TABLE">{{ fieldName.name }}</th>
+                        </tr>
+                    </template>
+                    <template #tbody>
+                            <tr v-for="item in productStore.products" key="{{ item.id }}"
+                                @click="router.push({name: 'products.show', params: {productId: item.id}})"
+                            >
+                                <td v-for="fieldName in NAME_FIELDS_PRODUCT_TABLE">
+                                <span v-if="Array.isArray(item[fieldName.field])">
+                                    <span v-for="currentItem in item[fieldName.field]">
+                                        {{ setFirstLetterCapital(currentItem.name) + ': ' + currentItem.value }}
+                                        <br>
+                                    </span>
+                                </span>
+                                    <span v-else>
+                                        {{ item[fieldName.field] }}
+                                </span>
+                                </td>
+                            </tr>
+                    </template>
+                </CustomTable>
                 <div style="margin: 17px 18px 17px auto;">
-                    <CustomButton @click="appStore.openModal">Добавить</CustomButton>
+                    <router-link :to="{ name: 'products.create'}">
+                        <CustomButton>Добавить</CustomButton>
+                    </router-link>
                 </div>
+            </div>
+            <div class="loader-container"  v-else >
+                <DotLoader color="#333" />
             </div>
         </div>
     </div>
+    <router-view/>
 </template>
 
 <style scoped>
@@ -58,5 +86,12 @@ onMounted(() => {
     margin-top: 7px;
     margin-left: 12px;
     color: #FFF;
+}
+
+.loader-container {
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>

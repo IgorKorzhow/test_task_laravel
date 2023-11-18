@@ -1,9 +1,8 @@
 <script setup>
-import PropertyPage from "@/components/pages/products/ProductPage.vue";
 </script>
 
 <template>
-    <PropertyPage />
+    <router-view />
 </template>
 
 <style>
@@ -18,7 +17,7 @@ import PropertyPage from "@/components/pages/products/ProductPage.vue";
 
 .title {
     font-weight: bold;
-    margin: 12px 0 30px 0;
+    //margin: 12px 0 30px 0;
     font-size: 20px;
     color: #FFFFFF;
 }

@@ -13,6 +13,7 @@
 
 <style scoped>
 .cross {
+    padding: 8px;
     cursor: pointer;
 }
 </style>

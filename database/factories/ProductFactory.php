@@ -22,8 +22,14 @@ class ProductFactory extends Factory
             'name' => fake()->name(),
             'status' => fake()->randomElement(ProductStatus::values()),
             'data' => [
-                'color' => fake()->colorName(),
-                'size' => fake()->randomNumber()
+                [
+                    'name' => 'color',
+                    'value' => fake()->colorName()
+                ],
+                [
+                    'name' => 'size',
+                    'value' => fake()->randomNumber()
+                ]
             ],
         ];
     }

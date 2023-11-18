@@ -5,7 +5,6 @@ export default {
 </script>
 
 <script setup>
-import Cross from "@/components/logo/Cross.vue";
 import {ref} from "vue";
 import { onClickOutside } from '@vueuse/core'
 
@@ -19,10 +18,11 @@ onClickOutside(target, () => emit('closeModal'))
     <div class="modal">
         <div class="modal-content" ref="target">
             <div class="modal-content-container">
-                <slot>
-                </slot>
+                <slot name="body" />
             </div>
-            <Cross style="margin-left: auto" @click="$emit('closeModal')" />
+            <div style="margin-left: auto">
+                <slot name="navigation" />
+            </div>
         </div>
     </div>
 </template>
@@ -47,6 +47,7 @@ onClickOutside(target, () => emit('closeModal'))
     margin: 10% auto;
     padding: 18px 5px;
     width: 50%;
+    min-height: 50%;
 }
 
 .modal-content-container {
