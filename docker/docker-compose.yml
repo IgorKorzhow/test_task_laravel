@@ -18,6 +18,17 @@ services:
         depends_on:
             - mailhog
             - rabbitmq
+    postgres:
+        image: postgres:15
+        container_name: 'postgres'
+        environment:
+            POSTGRES_DB: "test_task"
+            POSTGRES_USER: "postgres"
+            POSTGRES_PASSWORD: "password"
+        networks:
+            - application
+        ports:
+            - "5432:5432"
     nginx:
         image: nginx:latest
         container_name: nginx
