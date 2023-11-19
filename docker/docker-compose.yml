@@ -1,31 +1,37 @@
 version: "3.7"
 services:
-    laravel:
+    app:
         build:
             args:
-                user: root
+                user: user
                 uid: 1000
-            context: ./
-            dockerfile: Dockerfile
+            context: .
+            dockerfile: ./php/Dockerfile
         image: laravel-image
-        container_name: 'laravel'
+        container_name: 'app'
         restart: unless-stopped
         working_dir: /var/www/
         volumes:
             - ./../:/var/www
         networks:
             - application
+        depends_on:
+            - mailhog
+            - rabbitmq
     nginx:
-        image: nginx:1.17-alpine
-        container_name: travellist-nginx
-        restart: unless-stopped
-        ports:
-            - 8000:80
-        volumes:
-            - ./:/var/www
-            - ./docker-compose/nginx:/etc/nginx/conf.d
+        image: nginx:latest
+        container_name: nginx
         networks:
-            - travellist
+            - application
+        ports:
+            - "80:80"
+        volumes:
+            - ./nginx/config/site.conf:/etc/nginx/conf.d/site.conf
+            - ../:/var/www
+        depends_on:
+            - app
+            - mailhog
+            - rabbitmq
     mailhog:
         image: mailhog/mailhog:latest
         container_name: 'mailhog'
