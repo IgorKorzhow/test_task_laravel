@@ -5,9 +5,9 @@ export default {
 </script>
 
 <script setup>
-const props = defineProps({
-    modelValue: String,
-});
+const props = defineProps([
+    'modelValue'
+]);
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -17,7 +17,7 @@ const updateValue = (event) => {
 </script>
 
 <template>
-<input class="input" @input="updateValue"/>
+<input class="input" :value="modelValue" @input="updateValue"/>
 </template>
 
 <style scoped>

@@ -19,12 +19,15 @@ onMounted(() => {
     productStore.fetchProductById(route.params.productId)
 });
 
-const closeModalHandler = () => router.push({name: 'products'});
+const closeModalHandler = () => {
+    productStore.freshProductInfo();
+    router.push({name: 'products'}
+    );
+}
 
 const deleteProductHandler = () => {
     if (confirm("Вы уверены в удалении?")) {
-        productStore.deleteProductById(productStore.selectedProduct.id, closeModalHandler);
-        closeModalHandler();
+        productStore.deleteProductById(closeModalHandler);
     }
 }
 </script>
@@ -46,24 +49,24 @@ const deleteProductHandler = () => {
                 </div>
             </div>
         </template>
-        <template #body v-if="productStore.selectedProduct">
+        <template #body v-if="productStore.originalProduct">
             <div>
                 <div class="title">
-                    {{ productStore.selectedProduct.name }}
+                    {{ productStore.originalProduct.name }}
                 </div>
                 <ShowInfoItem v-for="field in NAME_FIELDS_PRODUCT_EDIT">
                     <template #fieldName>
                         {{ field.name }}
                     </template>
                     <template #fieldValue>
-                        <span v-if="Array.isArray(productStore.selectedProduct[field.value])">
-                            <span v-for="currentItem in productStore.selectedProduct[field.value]">
+                        <span v-if="Array.isArray(productStore.originalProduct[field.value])">
+                            <span v-for="currentItem in productStore.originalProduct[field.value]">
                                 {{ setFirstLetterCapital(currentItem.name) + ': ' + currentItem.value }}
                                 <br>
                             </span>
                         </span>
                         <span v-else>
-                            {{ productStore.selectedProduct[field.value]}}
+                            {{ productStore.originalProduct[field.value]}}
                         </span>
                     </template>
                 </ShowInfoItem>

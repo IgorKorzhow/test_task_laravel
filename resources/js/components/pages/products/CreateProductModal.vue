@@ -3,35 +3,21 @@ import {STATUSES} from "@/constants/statuses.js";
 import Basket from "@/components/logo/Basket.vue";
 import {useProductStore} from "@/stores/productStore.js";
 import {useRouter} from 'vue-router';
-import {reactive} from "vue";
 import validationError from "@/components/UI/ValidationError.vue";
 import Cross from "@/components/logo/Cross.vue";
+import {onBeforeMount} from "vue";
 
 const router = useRouter();
 const productStore = useProductStore();
 
-const productData = reactive({
-    product: {
-        article: '',
-        name: '',
-        status: STATUSES[0].value,
-        data: [],
-    },
-    validationErrors: []
-})
+onBeforeMount(() => {
+    productStore.initializeNewProduct();
+});
 
-const addAttributeToProductData = () => {
-    productData.product.data.push({
-        name: '',
-        value: '',
-    })
-};
-
-const deleteAttributeFromProductData = (attributeIndex) => {
-    productData.product.data = productData.product.data.filter((item, index) => index !== attributeIndex);
-};
-
-const closeModalHandler = () => router.push({name: 'products'});
+const closeModalHandler = () => {
+    productStore.freshProductInfo();
+    router.push({name: 'products'});
+}
 </script>
 
 <template>
@@ -43,30 +29,30 @@ const closeModalHandler = () => router.push({name: 'products'});
             <div class="title">
                 Добавить продукт
             </div>
-            <form @submit.prevent="productStore.storeProduct(closeModalHandler, productData)">
+            <form @submit.prevent="productStore.storeProduct(closeModalHandler)">
                 <div class="form-group">
                     <CustomLabel for="article">Артикул</CustomLabel>
-                    <CustomInput id="article" v-model="productData.product.article"/>
-                    <ValidationError v-if="productData.validationErrors.article">
-                        {{ productData.validationErrors.article[0] }}
+                    <CustomInput id="article" v-model="productStore.changedProduct.article"/>
+                    <ValidationError v-if="productStore.validationErrors.article">
+                        {{ productStore.validationErrors.article[0] }}
                     </ValidationError>
                 </div>
                 <div class="form-group">
                     <CustomLabel for="name">Название</CustomLabel>
-                    <CustomInput id="name" v-model="productData.product.name"/>
-                    <ValidationError v-if="productData.validationErrors.name">
-                        {{ productData.validationErrors.name[0] }}
+                    <CustomInput id="name" v-model="productStore.changedProduct.name"/>
+                    <ValidationError v-if="productStore.validationErrors.name">
+                        {{ productStore.validationErrors.name[0] }}
                     </ValidationError>
                 </div>
                 <div class="form-group">
                     <CustomLabel>Статус</CustomLabel>
                     <CustomSelect
                         :options="STATUSES"
-                        :model-value="productData.product.status"
-                        @update:model-value="newValue => productData.product.status = newValue"
+                        :model-value="productStore.changedProduct.status"
+                        @update:model-value="newValue => productStore.changedProduct.status = newValue"
                     />
-                    <ValidationError v-if="productData.validationErrors.status">
-                        {{ productData.validationErrors.status[0] }}
+                    <ValidationError v-if="productStore.validationErrors.status">
+                        {{ productStore.validationErrors.status[0] }}
                     </ValidationError>
                 </div>
                 <div class="form-group">
@@ -74,7 +60,7 @@ const closeModalHandler = () => router.push({name: 'products'});
                         Атрибуты
                     </div>
                 </div>
-                <div v-for="(attribute, index) in productData.product.data" :key="index" class="container">
+                <div v-for="(attribute, index) in productStore.changedProduct.data" :key="index" class="container">
                     <div class="form-group attributes-container">
                         <CustomLabel :for="index + 'name'">Название</CustomLabel>
                         <CustomInput :id="index + 'name'" v-model="attribute.name"/>
@@ -84,10 +70,10 @@ const closeModalHandler = () => router.push({name: 'products'});
                         <CustomInput :id="index + 'value'" v-model="attribute.value"/>
                     </div>
                     <div class="basket-container">
-                        <Basket @click="deleteAttributeFromProductData(index)"/>
+                        <Basket @click="productStore.deleteAttributeFromProductData(index)"/>
                     </div>
                 </div>
-                <LinkButton @click="addAttributeToProductData">+ Добавить атрибут</LinkButton>
+                <LinkButton @click="productStore.addAttributeToProductData">+ Добавить атрибут</LinkButton>
                 <div>
                     <CustomButton>Добавить</CustomButton>
                 </div>

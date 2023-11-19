@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Commands\Product\CreateProductCommand;
 use App\Commands\Product\UpdateProductCommand;
 use App\Data\ProductData;
+use App\Enums\UserRoles;
 use App\Services\ProductService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -33,8 +34,6 @@ class ProductController extends Controller
      */
     public function store(CreateProductCommand $createProductCommand): JsonResponse
     {
-        //dd($createProductCommand);
-
         $createdProduct = $this->productService->createProduct($createProductCommand);
 
         return response()->json(ProductData::from($createdProduct), 201);
@@ -57,8 +56,11 @@ class ProductController extends Controller
      */
     public function update(UpdateProductCommand $updateProductCommand, string $id): ProductData
     {
-        if (is_string($updateProductCommand->article) && !Gate::allows('update-article')) {
-            abort(403);
+        if (
+            is_string($updateProductCommand->article) &&
+            !(config('products.role') === UserRoles::ADMIN->value)
+        ) {
+            abort(403, 'You are cannot update article');
         }
 
         return ProductData::from($this->productService->updateProduct($updateProductCommand, $id));

@@ -1,0 +1,56 @@
+version: "3.7"
+services:
+    laravel:
+        build:
+            args:
+                user: root
+                uid: 1000
+            context: ./
+            dockerfile: Dockerfile
+        image: laravel-image
+        container_name: 'laravel'
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./../:/var/www
+        networks:
+            - application
+    nginx:
+        image: nginx:1.17-alpine
+        container_name: travellist-nginx
+        restart: unless-stopped
+        ports:
+            - 8000:80
+        volumes:
+            - ./:/var/www
+            - ./docker-compose/nginx:/etc/nginx/conf.d
+        networks:
+            - travellist
+    mailhog:
+        image: mailhog/mailhog:latest
+        container_name: 'mailhog'
+        restart: always
+        networks:
+            - application
+        ports:
+            - "1025:1025"
+            - "8025:8025"
+    rabbitmq:
+        image: rabbitmq:3-management-alpine
+        container_name: 'rabbitmq'
+        hostname: rabbitmq
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        environment:
+            - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit disk_free_limit 2147483648
+            - RABBITMQ_DEFAULT_USER=guest
+            - RABBITMQ_DEFAULT_PASS=guest
+        volumes:
+            - ./rabbitmq:/var/lib/rabbitmq
+        networks:
+            - application
+
+networks:
+    application:
+        driver: bridge

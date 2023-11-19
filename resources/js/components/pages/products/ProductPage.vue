@@ -27,9 +27,11 @@ onMounted(() => {
                     Enterprise Resource Planning
                 </div>
             </div>
-            <NavbarItem />
+            <NavbarItem :path="{name: 'products'}">
+                Продукты
+            </NavbarItem>
         </div>
-        <div style="width: 100%">
+        <div class="content-part" >
             <Navbar/>
             <div class="container" v-if="productStore.products">
                 <CustomTable>
@@ -78,8 +80,14 @@ onMounted(() => {
 
 .navigation-part {
     min-height: 100vh;
+    position: fixed;
     width: 180px;
     background-color: #374050;
+}
+
+.content-part {
+    width: 100%;
+    margin-left: 180px
 }
 
 .logo-text {
