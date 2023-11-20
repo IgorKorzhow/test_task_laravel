@@ -37,9 +37,12 @@ class ProductRepository
     }
 
     /**
+     * @param array $data
+     * @param string $id
+     * @return Product
      * @throws Throwable
      */
-    public function updateProduct(array $data, int $id): Product
+    public function updateProduct(array $data, string $id): Product
     {
         $product = Product::findOrFail($id);
         $product->updateOrFail($data);
@@ -48,10 +51,10 @@ class ProductRepository
     }
 
     /**
-     * @param int $id
+     * @param string $id
      * @return bool|null
      */
-    public function deleteProduct(int $id): ?bool
+    public function deleteProduct(string $id): ?bool
     {
         return Product::findOrFail($id)->delete();
     }

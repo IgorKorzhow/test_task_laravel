@@ -6,10 +6,12 @@ use App\Commands\Product\CreateProductCommand;
 use App\Commands\Product\UpdateProductCommand;
 use App\Data\ProductData;
 use App\Enums\UserRoles;
+use App\Mail\ProductWasCreated;
 use App\Services\ProductService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 use Spatie\LaravelData\PaginatedDataCollection;
 use Throwable;
 

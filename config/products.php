@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'role' => 'admin'
+    'role' => 'admin',
+    'email' => 'placeholder@gmail.com'
 ];

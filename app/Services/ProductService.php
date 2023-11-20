@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Commands\Product\CreateProductCommand;
 use App\Commands\Product\UpdateProductCommand;
+use App\Events\ProductCreated;
 use App\Models\Product;
 use App\Repositories\ProductRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -40,25 +41,29 @@ class ProductService
      */
     public function createProduct(CreateProductCommand $createProductCommand): Product
     {
-        return $this->productRepository->createProduct($createProductCommand->all());
+        $product = $this->productRepository->createProduct($createProductCommand->all());
+
+        ProductCreated::dispatch($product);
+
+        return $product;
     }
 
     /**
      * @param UpdateProductCommand $updateProductCommand
-     * @param int $id
+     * @param string $id
      * @return Product
      * @throws Throwable
      */
-    public function updateProduct(UpdateProductCommand $updateProductCommand, int $id): Product
+    public function updateProduct(UpdateProductCommand $updateProductCommand, string $id): Product
     {
         return $this->productRepository->updateProduct($updateProductCommand->toArray(), $id);
     }
 
     /**
-     * @param int $id
+     * @param string $id
      * @return bool|null
      */
-    public function deleteProduct(int $id): ?bool
+    public function deleteProduct(string $id): ?bool
     {
         return $this->productRepository->deleteProduct($id);
     }
