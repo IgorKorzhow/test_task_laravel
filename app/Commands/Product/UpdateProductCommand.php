@@ -24,7 +24,7 @@ class UpdateProductCommand extends Data
         public Optional|string $name,
         #[Bail, Enum(ProductStatus::class)]
         public Optional|ProductStatus $status,
-        public array $data,
+        public Optional|array $data,
     )
     {
     }
