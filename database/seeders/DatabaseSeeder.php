@@ -14,10 +14,10 @@ class DatabaseSeeder extends Seeder
     {
         Product::factory(10)->create();
 
-        $this->call(
-            [
-                UserSeeder::class,
-            ]
-        );
+//        $this->call(
+//            [
+//                UserSeeder::class,
+//            ]
+//        );
     }
 }

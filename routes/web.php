@@ -13,4 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', static fn() => view('app'));
+Route::any('{any}', static function () {
+    return view('app');
+})->where('any', '.*');

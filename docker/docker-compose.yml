@@ -1,0 +1,88 @@
+version: "3.7"
+services:
+    app:
+        build:
+            args:
+                user: user
+                uid: 1000
+            context: .
+            dockerfile: ./php/Dockerfile
+        image: laravel-image
+        container_name: 'app'
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./../:/var/www
+        networks:
+            - application
+        depends_on:
+            - mailhog
+            - rabbitmq
+    supervisor:
+        build:
+            args:
+                user: user
+                uid: 1000
+            context: .
+            dockerfile: ./supervisor/Dockerfile
+        container_name: supervisor
+        volumes:
+            - ../:/var/www
+        networks:
+            - application
+
+    postgres:
+        image: postgres:15
+        container_name: 'postgres'
+        environment:
+            POSTGRES_DB: "test_task"
+            POSTGRES_USER: "postgres"
+            POSTGRES_PASSWORD: "password"
+        volumes:
+            - ./postgres/data:/var/lib/postgresql/data
+        networks:
+            - application
+        ports:
+            - "5432:5432"
+    nginx:
+        image: nginx:latest
+        container_name: nginx
+        networks:
+            - application
+        ports:
+            - "80:80"
+        volumes:
+            - ./nginx/config/site.conf:/etc/nginx/conf.d/site.conf
+            - ../:/var/www
+        depends_on:
+            - app
+            - mailhog
+            - rabbitmq
+    mailhog:
+        image: mailhog/mailhog:latest
+        container_name: 'mailhog'
+        restart: always
+        networks:
+            - application
+        ports:
+            - "1025:1025"
+            - "8025:8025"
+    rabbitmq:
+        image: rabbitmq:3-management-alpine
+        container_name: 'rabbitmq'
+        hostname: rabbitmq
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        environment:
+            - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit disk_free_limit 2147483648
+            - RABBITMQ_DEFAULT_USER=guest
+            - RABBITMQ_DEFAULT_PASS=guest
+        volumes:
+            - ./rabbitmq:/var/lib/rabbitmq
+        networks:
+            - application
+
+networks:
+    application:
+        driver: bridge
