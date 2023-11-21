@@ -3,10 +3,12 @@
   `127.0.0.1       start-docker.test`
 - дать права на папку storage `sudo chmod -R 777 ./storage`
 - вызвать команду `npm install`
-- затем зайти в папку docker и написать `docker compose up -d`
+- скопирывать `.env.exaple` и на сонове его создать `.env`
+- затем зайти в папку docker и на основе `.env.example` создадим свой `.env` файл
+- напишем `docker compose up -d`
 - зайти в контейнер app и выполнить `composer install`
 - выполнить `php artisan migrate`
-- в папке с самим приложением вызвать команду `npm run dev`
+- выйти из контейнера и в папке с самим приложением вызвать команду `npm run dev`
 ## Ваш сайт доступен для использования
 
 
