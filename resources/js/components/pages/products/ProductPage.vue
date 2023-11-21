@@ -5,7 +5,7 @@ import NavbarItem from "@/components/items/NavbarItem.vue";
 import Navbar from "@/components/navbar/Navbar.vue";
 import {NAME_FIELDS_PRODUCT_TABLE} from "@/constants/productHeadersForTable.js";
 import {useProductStore} from "@/stores/productStore.js";
-import {setFirstLetterCapital} from "@/helpers.js";
+import {getRightStatusName, setFirstLetterCapital} from "@/helpers.js";
 import {useRouter} from "vue-router";
 import {DotLoader} from "vue3-spinner";
 
@@ -51,7 +51,10 @@ onMounted(() => {
                                         <br>
                                     </span>
                                 </span>
-                                    <span v-else>
+                                <span v-else-if="fieldName.field === 'status'">
+                                        {{ getRightStatusName(item[fieldName.field]) }}
+                                </span>
+                                <span v-else>
                                         {{ item[fieldName.field] }}
                                 </span>
                                 </td>

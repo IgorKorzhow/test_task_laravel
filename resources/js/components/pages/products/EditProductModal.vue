@@ -14,10 +14,7 @@ const productStore = useProductStore();
 
 const isLoadedProduct = ref(false);
 
-const closeModalHandler = () => {
-    productStore.freshProductInfo();
-    router.push({name: 'products'});
-}
+const closeModalHandler = () => router.push({name: 'products'});
 
 onMounted(async () => {
     await productStore.fetchProductById(route.params.productId);

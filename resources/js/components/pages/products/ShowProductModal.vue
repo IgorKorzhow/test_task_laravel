@@ -7,7 +7,7 @@ import Basket from "@/components/logo/Basket.vue";
 import Cross from "@/components/logo/Cross.vue";
 import { DotLoader } from "vue3-spinner";
 import ShowInfoItem from "@/components/items/ShowInfoItem.vue";
-import {setFirstLetterCapital} from "@/helpers.js";
+import {getRightStatusName, setFirstLetterCapital} from "@/helpers.js";
 import {NAME_FIELDS_PRODUCT_EDIT} from "@/constants/productKeysForEdit.js";
 
 const router = useRouter();
@@ -19,11 +19,7 @@ onMounted(() => {
     productStore.fetchProductById(route.params.productId)
 });
 
-const closeModalHandler = () => {
-    productStore.freshProductInfo();
-    router.push({name: 'products'}
-    );
-}
+const closeModalHandler = () => router.push({name: 'products'});
 
 const deleteProductHandler = () => {
     if (confirm("Вы уверены в удалении?")) {
@@ -64,6 +60,9 @@ const deleteProductHandler = () => {
                                 {{ setFirstLetterCapital(currentItem.name) + ': ' + currentItem.value }}
                                 <br>
                             </span>
+                        </span>
+                        <span v-else-if="field.value === 'status'">
+                            {{ getRightStatusName(productStore.originalProduct[field.value]) }}
                         </span>
                         <span v-else>
                             {{ productStore.originalProduct[field.value]}}
